@@ -17,7 +17,7 @@ from skimage.transform import resize
 import sys
 
 class ImageFolder(Dataset):
-    def __init__(self, folder_path, img_size=416):
+    def __init__(self, folder_path, img_size):
         self.files = sorted(glob.glob('%s/*.*' % folder_path))
         self.img_shape = (img_size, img_size)
 
@@ -47,7 +47,7 @@ class ImageFolder(Dataset):
 
 
 class ListDataset(Dataset):
-    def __init__(self, list_path, img_size=416):
+    def __init__(self, list_path, img_size):
         with open(list_path, 'r') as file:
             self.img_files = file.readlines()
         self.label_files = [path.replace('images', 'labels').replace('.png', '.txt').replace('.jpg', '.txt') for path in self.img_files]
@@ -95,10 +95,16 @@ class ListDataset(Dataset):
         if os.path.exists(label_path):
             labels = np.loadtxt(label_path).reshape(-1, 5)
             # Extract coordinates for unpadded + unscaled image
-            x1 = w * (labels[:, 1] - labels[:, 3]/2)
-            y1 = h * (labels[:, 2] - labels[:, 4]/2)
-            x2 = w * (labels[:, 1] + labels[:, 3]/2)
-            y2 = h * (labels[:, 2] + labels[:, 4]/2)
+            x1=labels[:,1]
+            y1=labels[:,2]
+            x2=labels[:,3]
+            y2=labels[:,4]
+            width=np.abs(x1-x2)
+            height=np.abs(y1-y2)
+#            x1 = w * (labels[:, 1] - labels[:, 3]/2)
+#            y1 = h * (labels[:, 2] - labels[:, 4]/2)
+#            x2 = w * (labels[:, 1] + labels[:, 3]/2)
+#            y2 = h * (labels[:, 2] + labels[:, 4]/2)
             # Adjust for added padding
             x1 += pad[1][0]
             y1 += pad[0][0]
@@ -107,8 +113,8 @@ class ListDataset(Dataset):
             # Calculate ratios from coordinates
             labels[:, 1] = ((x1 + x2) / 2) / padded_w
             labels[:, 2] = ((y1 + y2) / 2) / padded_h
-            labels[:, 3] *= w / padded_w
-            labels[:, 4] *= h / padded_h
+            labels[:, 3] = width/ padded_w
+            labels[:, 4] = height/ padded_h
         # Fill matrix
         filled_labels = np.zeros((self.max_objects, 5))
         if labels is not None:

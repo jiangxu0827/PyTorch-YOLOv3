@@ -34,3 +34,85 @@ def parse_data_config(path):
         key, value = line.split('=')
         options[key.strip()] = value.strip()
     return options
+
+def model_filter(model):
+    for i,m in enumerate(model.modules()):
+        for p in m.parameters():
+            p.requires_grad=False
+    #for i,m in enumerate(model.modules()):
+        if i==361:
+            for p in m.parameters():
+                p.requires_grad=True
+        elif i==357:
+            for p in m.parameters():
+                p.requires_grad=True
+        elif i==353:
+            for p in m.parameters():
+                p.requires_grad=True
+        elif i==349:
+            for p in m.parameters():
+                p.requires_grad=True
+        elif i==345:
+            for p in m.parameters():
+                p.requires_grad=True
+        elif i==341:
+            for p in m.parameters():
+                p.requires_grad=True
+        elif i==337:
+            for p in m.parameters():
+                p.requires_grad=True 
+        elif i==333:
+            for p in m.parameters():
+                p.requires_grad=True
+        elif i==329:
+            for p in m.parameters():
+                p.requires_grad=True
+                #for 3rd yolo layer
+        elif i==321:
+            for p in m.parameters():
+                p.requires_grad=True
+        elif i==317:
+            for p in m.parameters():
+                p.requires_grad=True
+        elif i==313:
+            for p in m.parameters():
+                p.requires_grad=True
+        elif i==309:
+            for p in m.parameters():
+                p.requires_grad=True
+        elif i==305:
+            for p in m.parameters():
+                p.requires_grad=True
+        elif i==301:
+            for p in m.parameters():
+                p.requires_grad=True 
+        elif i==297:
+            for p in m.parameters():
+                p.requires_grad=True 
+        elif i==293:
+            for p in m.parameters():
+                p.requires_grad=True
+        elif i==289:
+            for p in m.parameters():
+                p.requires_grad=True
+                #for 2nd yolo layer
+        elif i==281:
+            for p in m.parameters():
+                p.requires_grad=True
+        elif i==277:
+            for p in m.parameters():
+                p.requires_grad=True
+        elif i==273:
+            for p in m.parameters():
+                p.requires_grad=True 
+        elif i==269:
+            for p in m.parameters():
+                p.requires_grad=True
+        elif i==265:
+            for p in m.parameters():
+                p.requires_grad=True
+        elif i==261:
+            for p in m.parameters():
+                p.requires_grad=True 
+                 #for 1st yolo layer
+    return model

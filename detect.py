@@ -21,14 +21,14 @@ from matplotlib.ticker import NullLocator
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--image_folder', type=str, default='data/samples', help='path to dataset')
-parser.add_argument('--config_path', type=str, default='config/yolov3.cfg', help='path to model config file')
-parser.add_argument('--weights_path', type=str, default='weights/yolov3.weights', help='path to weights file')
-parser.add_argument('--class_path', type=str, default='data/coco.names', help='path to class label file')
-parser.add_argument('--conf_thres', type=float, default=0.8, help='object confidence threshold')
-parser.add_argument('--nms_thres', type=float, default=0.4, help='iou thresshold for non-maximum suppression')
+parser.add_argument('--config_path', type=str, default='config/yolov3_detect608_anchor.cfg', help='path to model config file')
+parser.add_argument('--weights_path', type=str, default='checkpoints/checkpoint_608/1.weights', help='path to weights file')
+parser.add_argument('--class_path', type=str, default='data/AI.names', help='path to class label file')
+parser.add_argument('--conf_thres', type=float, default=0.9, help='object confidence threshold')
+parser.add_argument('--nms_thres', type=float, default=0.2, help='iou thresshold for non-maximum suppression')
 parser.add_argument('--batch_size', type=int, default=1, help='size of the batches')
-parser.add_argument('--n_cpu', type=int, default=8, help='number of cpu threads to use during batch generation')
-parser.add_argument('--img_size', type=int, default=416, help='size of each image dimension')
+parser.add_argument('--n_cpu', type=int, default=0, help='number of cpu threads to use during batch generation')
+parser.add_argument('--img_size', type=int, default=608, help='size of each image dimension')
 parser.add_argument('--use_cuda', type=bool, default=True, help='whether to use cuda if available')
 opt = parser.parse_args()
 print(opt)
@@ -47,7 +47,7 @@ if cuda:
 model.eval() # Set in evaluation mode
 
 dataloader = DataLoader(ImageFolder(opt.image_folder, img_size=opt.img_size),
-                        batch_size=opt.batch_size, shuffle=False, num_workers=opt.n_cpu)
+                        batch_size=opt.batch_size, shuffle=False)#, num_workers=opt.n_cpu
 
 classes = load_classes(opt.class_path) # Extracts class labels from file
 
@@ -65,7 +65,8 @@ for batch_i, (img_paths, input_imgs) in enumerate(dataloader):
     # Get detections
     with torch.no_grad():
         detections = model(input_imgs)
-        detections = non_max_suppression(detections, 80, opt.conf_thres, opt.nms_thres)
+        detections = non_max_suppression(detections, 10, opt.conf_thres, opt.nms_thres)
+        print(detections)
 
 
     # Log progress
