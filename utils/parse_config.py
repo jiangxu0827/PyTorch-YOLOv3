@@ -116,3 +116,23 @@ def model_filter(model):
                 p.requires_grad=True 
                  #for 1st yolo layer
     return model
+
+def multiscale_training(model,img_size):
+    model.img_size=img_size
+    for i,m in enumerate(model.modules()):
+        if i==363:
+            m.img_dim=img_size
+            m.anchors=[(int(15*img_size/1280),int(16*img_size/1280)),
+                      (int(22*img_size/1280),int(43*img_size/1280)),
+                      (int(34*img_size/1280),int(24*img_size/1280))]
+        elif i==323:
+            m.img_dim=img_size
+            m.anchors=[(int(43*img_size/1280),int(95*img_size/1280)),
+                      (int(62*img_size/1280),int(45*img_size/1280)),
+                      (int(113*img_size/1280),int(78*img_size/1280))]
+        elif i==283:
+            m.img_dim=img_size
+            m.anchors=[(int(173*img_size/1280),int(146*img_size/1280)),
+                      (int(296*img_size/1280),int(223*img_size/1280)),
+                      (int(430*img_size/1280),int(380*img_size/1280))]
+    return model

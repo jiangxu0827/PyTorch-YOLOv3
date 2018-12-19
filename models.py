@@ -209,6 +209,11 @@ class Darknet(nn.Module):
                 else:
                     x = module(x)
                 output.append(x)
+                if is_training:
+                    if len(output)==3:
+                        output[0]*=0.25
+                        output[1]*=0.25
+                        output[2]*=0.5
             layer_outputs.append(x)
 
         self.losses['recall'] /= 3
