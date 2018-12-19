@@ -46,7 +46,7 @@ class ImageFolder(Dataset):
         return len(self.files)
 
 
-class TrainDataset(Dataset):
+class MultiTrainDataset(Dataset):
     def __init__(self, list_path):
         with open(list_path, 'r') as file:
             self.img_files = file.readlines()
@@ -132,7 +132,7 @@ class TrainDataset(Dataset):
     def __len__(self):
         return len(self.img_files)
 
-class TestDataset(Dataset):
+class ListDataset(Dataset):
     def __init__(self, list_path,img_size):
         with open(list_path, 'r') as file:
             self.img_files = file.readlines()
