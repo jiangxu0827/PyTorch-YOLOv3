@@ -1,6 +1,6 @@
-# PyTorch-YOLOv3
+# PyTorch-YOLOv3 on AI challenger detection and segmentation
 Minimal implementation of YOLOv3 in PyTorch.
-
+Darknet-53 as backbone for BDD100K dataset
 ## Table of Contents
 - [PyTorch-YOLOv3](#pytorch-yolov3)
   * [Table of Contents](#table-of-contents)
@@ -61,7 +61,7 @@ Uses pretrained weights to make predictions on images. Below table displays the 
 <p align="center"><img src="assets/messi.png" width="480"\></p>
 
 ## Test
-Evaluates the model on COCO test.
+Evaluates the model on BDD100K test.
 
     $ python3 test.py --weights_path weights/yolov3.weights
 
